@@ -100,12 +100,12 @@
         </button>
         <div id="surprise" style="display: none;">
             <img src="img20.jpg" alt="Foto surpresa" style="max-width: 100%; border-radius: 10px;">
-            <p>Eu te amo mais que tudo, Suellen!</p>
+            <p>Amor você é o ar que respiro! Te amo para sempre!!</p>
         </div>
     </footer>
 
     <!-- Áudio de Fundo (invisível) -->
-    <audio id="bg-music" loop>
+    <audio id="bg-music" autoplay loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
@@ -217,6 +217,17 @@
                 musicToggle.innerHTML = '<i class="fas fa-music"></i> Ligar Música';
             });
         };
+        // Tenta tocar a música na primeira interação do usuário
+        document.body.addEventListener('click', function playMusicOnFirstClick() {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    musicToggle.innerHTML = '<i class="fas fa-music"></i> Desligar Música';
+                    document.getElementById("music-alert").style.display = "none";
+                });
+            }
+            // Remove o listener após a primeira tentativa
+            document.body.removeEventListener('click', playMusicOnFirstClick);
+        });
         fetch("https://moonphaseapi.org/api?date=2004-06-13")
         .then(response => response.json())
         .then(data => {
