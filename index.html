@@ -20,6 +20,9 @@
         <button id="music-toggle" onclick="toggleMusic()" style="margin: 18px 0 0 0;">
             <i class="fas fa-music"></i> Ligar Música
         </button>
+        <div id="music-alert" style="display:none; color:#ffd3e0; background:#23234bcc; border:1px solid #ff5eae; border-radius:12px; padding:10px 18px; margin-top:10px; z-index:10;">
+            <i class="fas fa-exclamation-triangle"></i> Clique em "Ligar Música" para ouvir a trilha sonora!
+        </div>
         <a href="#timeline" class="scroll-down">
             <i class="fas fa-chevron-down"></i>
         </a>
@@ -89,17 +92,6 @@
         </div>
     </section>
 
-    <!-- Livro de Mensagens -->
-    <section class="guestbook">
-        <h2>Mensagens para Nós</h2>
-        <form id="guestbook-form">
-            <input type="text" id="guest-name" placeholder="Seu nome" required>
-            <textarea id="guest-message" placeholder="Deixe uma mensagem..." required></textarea>
-            <button type="submit">Enviar <i class="fas fa-paper-plane"></i></button>
-        </form>
-        <div id="messages-container"></div>
-    </section>
-
     <!-- Rodapé Romântico -->
     <footer>
         <p>Feito com ❤️ por Vinícius para Suellen - Minha eterna namorada.</p>
@@ -152,6 +144,7 @@
             if (bgMusic.paused) {
                 bgMusic.play();
                 musicToggle.innerHTML = '<i class="fas fa-music"></i> Desligar Música';
+                document.getElementById("music-alert").style.display = "none";
             } else {
                 bgMusic.pause();
                 musicToggle.innerHTML = '<i class="fas fa-music"></i> Ligar Música';
@@ -198,24 +191,6 @@
             items[currentSlide].classList.add('active');
         }
 
-        // Livro de Mensagens
-        document.getElementById("guestbook-form").addEventListener("submit", function(e) {
-            e.preventDefault();
-            const name = document.getElementById("guest-name").value;
-            const message = document.getElementById("guest-message").value;
-
-            const messageCard = document.createElement("div");
-            messageCard.className = "message-card";
-            messageCard.innerHTML = `
-                <strong>${name}</strong>
-                <p>${message}</p>
-                <small>${new Date().toLocaleDateString()}</small>
-            `;
-
-            document.getElementById("messages-container").prepend(messageCard);
-            this.reset();
-        });
-
         // Botão Surpresa
         function revealSurprise() {
             const surprise = document.getElementById("surprise");
@@ -233,7 +208,14 @@
         window.onload = function() {
             typeWriter();
             atualizarContador();
-            toggleMusic(); // Ativa a música automaticamente e atualiza o botão
+            // Tenta tocar a música automaticamente
+            bgMusic.play().then(() => {
+                musicToggle.innerHTML = '<i class="fas fa-music"></i> Desligar Música';
+            }).catch(() => {
+                // Se o navegador bloquear o autoplay, mostra o alerta
+                document.getElementById("music-alert").style.display = "block";
+                musicToggle.innerHTML = '<i class="fas fa-music"></i> Ligar Música';
+            });
         };
         fetch("https://moonphaseapi.org/api?date=2004-06-13")
         .then(response => response.json())
