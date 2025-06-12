@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História | Vinícius & Suellen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <!-- Capa Romântica -->
+    <header class="capa" id="inicio">
+        <div class="overlay"></div>
+        <h1>Vinícius & Suellen</h1>
+        <p class="subtitle">Uma jornada de amor desde 18/03/2004</p>
+        <div id="contador"></div>
+        <div class="typed-message" id="typed-text"></div>
+        <button id="music-toggle" onclick="toggleMusic()" style="margin: 18px 0 0 0;">
+            <i class="fas fa-music"></i> Ligar Música
+        </button>
+        <a href="#timeline" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </header>
+
+    <!-- Timeline (Linha do Tempo) -->
+    <section class="timeline" id="timeline">
+        <!-- Capítulo 1: O Namoro -->
+        <div class="container left">
+            <div class="content">
+                <h2>18/03/2004 <i class="fas fa-heart"></i></h2>
+                <p>O dia em que tudo começou. Nosso primeiro olhar, a primeira vez que nossas mãos se tocaram...</p>
+                <img src="img12.jpeg" alt="Nosso namoro">
+                <div class="moon-phase">
+                    <img src="lua1.jpeg" alt="Lua Minguante" style="height:64px;vertical-align:middle;">
+                    <span id="lua-namoro">🌖 Lua Minguante (23% iluminada)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 2: O Noivado -->
+        <div class="container right">
+            <div class="content">
+                <h2>13/06/2004 <i class="fas fa-gem"></i></h2>
+                <p>Da nossa despedida da mocidade ...inesquecível ficará para sempre em nossas memórias!!! </p>
+                <p>O dia em que prometi te amar para sempre. Você disse "sim" e meu coração explodiu de felicidade!</p>
+                <img src="img9.jpeg" alt="Nosso noivado">
+                <div class="moon-phase">
+                    <img src="lua2.jpeg" alt="Lua Crescente" style="height:64px;vertical-align:middle;">
+                    <span id="lua-noivado">🌓 Lua Crescente (52% iluminada)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 3: O Casamento -->
+        <div class="container left">
+            <div class="content">
+                <h2>23/07/2005 <i class="fas fa-ring"></i></h2>
+                <p>O dia em que nos tornamos um só. Cada momento ao seu lado é uma bênção.</p>
+                <img src="img3.jpeg" alt="Nosso casamento">
+                <div class="moon-phase">
+                    <img src="lua3.jpeg" alt="Lua Cheia" style="height:64px;vertical-align:middle;">
+                    <span id="lua-casamento">🌕 Lua Cheia (99% iluminada)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capítulo 4: Nossa Jornada -->
+        <div class="container right">
+            <div class="content">
+                <h2>Nossa Vida Juntos <i class="fas fa-history"></i></h2>
+                <p>Momentos inesquecíveis, viagens, risadas e superação. Cada dia ao seu lado é um presente.</p>
+                <div class="carousel">
+                    <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active"><img src="img2.jpeg" alt="Momento 1"></div>
+                        <div class="carousel-item"><img src="img3.jpeg" alt="Momento 2"></div>
+                        <div class="carousel-item"><img src="img4.jpeg" alt="Momento 3"></div>
+                        <div class="carousel-item"><img src="img11.jpeg" alt="Momento 4"></div>
+                        <div class="carousel-item"><img src="img16.jpeg" alt="Momento 5"></div>
+                        <div class="carousel-item"><img src="img6.jpeg" alt="Momento 6"></div>
+                        <div class="carousel-item"><img src="img8.jpeg" alt="Momento 7"></div>
+                    </div>
+                    <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Livro de Mensagens -->
+    <section class="guestbook">
+        <h2>Mensagens para Nós</h2>
+        <form id="guestbook-form">
+            <input type="text" id="guest-name" placeholder="Seu nome" required>
+            <textarea id="guest-message" placeholder="Deixe uma mensagem..." required></textarea>
+            <button type="submit">Enviar <i class="fas fa-paper-plane"></i></button>
+        </form>
+        <div id="messages-container"></div>
+    </section>
+
+    <!-- Rodapé Romântico -->
+    <footer>
+        <p>Feito com ❤️ por Vinícius para Suellen - Minha eterna namorada.</p>
+        <button id="surprise-btn" onclick="revealSurprise()">
+            <i class="fas fa-gift"></i> Clique para uma surpresa!
+        </button>
+        <div id="surprise" style="display: none;">
+            <img src="img20.jpg" alt="Foto surpresa" style="max-width: 100%; border-radius: 10px;">
+            <p>Eu te amo mais que tudo, Suellen!</p>
+        </div>
+    </footer>
+
+    <!-- Áudio de Fundo (invisível) -->
+    <audio id="bg-music" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Scripts -->
+    <script>
+        // Contador de Tempo Juntos
+        function atualizarContador() {
+            const dataInicial = new Date("2004-03-18");
+            const hoje = new Date();
+            const diferenca = hoje - dataInicial;
+
+            const anos = Math.floor(diferenca / (1000 * 60 * 60 * 24 * 365));
+            const meses = Math.floor((diferenca % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const dias = Math.floor((diferenca % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            document.getElementById("contador").innerHTML = `
+                <i class="fas fa-heart"></i> ${anos} anos, ${meses} meses, ${dias} dias, 
+                ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos!
+            `;
+        }
+        setInterval(atualizarContador, 1000);
+
+        // Fases da Lua (simuladas)
+        document.getElementById("lua-namoro").textContent = "🌖 Lua Minguante (23% iluminada)";
+        document.getElementById("lua-noivado").textContent = "🌓 Lua Crescente (52% iluminada)";
+        document.getElementById("lua-casamento").textContent = "🌕 Lua Cheia (99% iluminada)";
+
+        // Controle de Música
+        const bgMusic = document.getElementById("bg-music");
+        const musicToggle = document.getElementById("music-toggle");
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.innerHTML = '<i class="fas fa-music"></i> Desligar Música';
+            } else {
+                bgMusic.pause();
+                musicToggle.innerHTML = '<i class="fas fa-music"></i> Ligar Música';
+            }
+        }
+
+        // Efeito de Digitação
+        const messages = [
+            "Suellen, cada dia ao seu lado é um presente...",
+            "Nossa história é meu maior tesouro...",
+            "Obrigado por ser minha eterna companheira..."
+        ];
+        let i = 0, j = 0, isDeleting = false;
+
+        function typeWriter() {
+            const element = document.getElementById("typed-text");
+            const currentMsg = messages[i];
+            
+            if (isDeleting) {
+                element.textContent = currentMsg.substring(0, j--);
+            } else {
+                element.textContent = currentMsg.substring(0, j++);
+            }
+
+            if (j === currentMsg.length + 1) {
+                isDeleting = true;
+                setTimeout(typeWriter, 2000);
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i = (i + 1) % messages.length;
+                setTimeout(typeWriter, 500);
+            } else {
+                setTimeout(typeWriter, isDeleting ? 50 : 100);
+            }
+        }
+
+        // Carrossel de Fotos
+        let currentSlide = 0;
+
+        function moveSlide(direction) {
+            const items = document.querySelectorAll('.carousel-item');
+            items[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + items.length) % items.length;
+            items[currentSlide].classList.add('active');
+        }
+
+        // Livro de Mensagens
+        document.getElementById("guestbook-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = document.getElementById("guest-name").value;
+            const message = document.getElementById("guest-message").value;
+
+            const messageCard = document.createElement("div");
+            messageCard.className = "message-card";
+            messageCard.innerHTML = `
+                <strong>${name}</strong>
+                <p>${message}</p>
+                <small>${new Date().toLocaleDateString()}</small>
+            `;
+
+            document.getElementById("messages-container").prepend(messageCard);
+            this.reset();
+        });
+
+        // Botão Surpresa
+        function revealSurprise() {
+            const surprise = document.getElementById("surprise");
+            surprise.style.display = surprise.style.display === "none" ? "block" : "none";
+            
+            // Efeito de confete
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Inicializações
+        window.onload = function() {
+            typeWriter();
+            atualizarContador();
+            toggleMusic(); // Ativa a música automaticamente e atualiza o botão
+        };
+        fetch("https://moonphaseapi.org/api?date=2004-06-13")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("lua-noivado").innerHTML = `
+                Lua: ${data.phase} (${data.illumination}% iluminada)
+            `;
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
